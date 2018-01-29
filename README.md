@@ -1,3 +1,16 @@
+Batch test
+=========
+
+Without BATCH:
+-------
+![Without debug player](WITHOUTbatch_RELEASE_sa_debug_player.PNG)
+![Without sa player](WITHOUTbatch_RELEASE_sa_player.PNG)
+
+With BATCH:
+-------
+![With debug player](WITHbatch_RELEASE_sa_debug_player.PNG)
+![With sa player](WITHbatch_RELEASE_sa_player.PNG)
+
 Starling Extension: Particle System
 ===================================
 
