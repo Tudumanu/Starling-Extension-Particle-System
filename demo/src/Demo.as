@@ -42,6 +42,17 @@ package
         
         [Embed(source="../media/jellyfish_particle.png")]
         private static const JellyfishParticle:Class;
+		
+		
+		///////////////////////////
+		//my particle config + texture
+		[Embed(source="../media/myfireparticle.png")]
+        private static const MyFireParticle:Class;
+		
+		[Embed(source="../media/myfire.pex", mimeType="application/octet-stream")]
+        private static const MyFireConfig:Class;
+		
+		
 
         // member variables
         
@@ -78,10 +89,36 @@ package
 
             // add event handlers for touch and keyboard
 
-            stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
-            stage.addEventListener(TouchEvent.TOUCH, onTouch);
+            //stage.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+            //stage.addEventListener(TouchEvent.TOUCH, onTouch);
 
-            startNextParticleSystem();
+            //startNextParticleSystem();
+
+			
+			
+			////////////////////////////
+			//Testing FPS and batch
+			var myConfig:XML = XML(new MyFireConfig());
+            var myTexture:Texture = Texture.fromEmbeddedAsset(MyFireParticle);
+			
+			var sprite:Sprite = new Sprite();
+			addChild(sprite);
+			
+			//16 * 12 = 192
+			for (var j:int = 0; j <= 15; j++){ //16
+				for (var k:int = 1; k <= 12; k++){ //12
+					var ps:ParticleSystem = new PDParticleSystem(myConfig, myTexture);
+					ps.x = 40 + 80*j;
+					ps.y = 60*k;
+					ps.start();
+					sprite.addChild(ps);
+					Starling.juggler.add(ps);
+					
+					//batch
+					//ps.batchable = true;
+					//ps.parent.blendMode = ps.blendMode;	
+				}
+			}
         }
         
         private function startNextParticleSystem():void
