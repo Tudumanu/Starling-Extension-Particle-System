@@ -1,5 +1,12 @@
 package
 {
+	import de.flintfabrik.starling.extensions.FFParticleSystem;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.SystemOptions;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.rendering.FFParticleEffect;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.rendering.FFParticleEffectClone;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.styles.FFInstancedParticleStyle;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.styles.FFParticleStyle;
+	import de.flintfabrik.starling.extensions.FFParticleSystem.styles.FFParticleStyleClone;
     import flash.ui.Keyboard;
 
     import starling.core.Starling;
@@ -105,7 +112,7 @@ package
 			addChild(sprite);
 			
 			//16 * 12 = 192
-			for (var j:int = 0; j <= 15; j++){ //16
+			/*for (var j:int = 0; j <= 15; j++){ //16
 				for (var k:int = 1; k <= 12; k++){ //12
 					var ps:ParticleSystem = new PDParticleSystem(myConfig, myTexture);
 					ps.x = 40 + 80*j;
@@ -117,6 +124,40 @@ package
 					//batch
 					//ps.batchable = true;
 					//ps.parent.blendMode = ps.blendMode;	
+				}
+			}*/
+			
+			/////////////////////////////
+			//FFParticle
+			// create system options
+			var sysOpt:SystemOptions = SystemOptions.fromXML(myConfig, myTexture);
+			
+			var particleSystemDefaultStyle:Class = FFParticleSystem.defaultStyle;
+			var ffpsStyle:FFParticleStyle = new particleSystemDefaultStyle();
+			
+			// init particle systems once before creating the first instance
+			// creates a particle pool of 1024
+			// creates four vertex buffers which can batch up to 512 particles each
+			//FFParticleSystem.init(1024, false, 512, 4);
+			FFParticleSystem.initPool(4096, false);
+			
+			FFParticleEffect.createBuffers(4096, 16);
+			FFParticleEffectClone.createBuffers(4096, 16);
+			
+			var spiteV:Vector.<Sprite> = new Vector.<Sprite>(192);
+			// create particle system
+			//16 * 12 = 192
+			for (var j:int = 0; j <= 15; j++){ //16
+				for (var k:int = 1; k <= 12; k++){ //12
+					var ps:FFParticleSystem = new FFParticleSystem(sysOpt, j>7?new FFParticleStyleClone():null);
+					ps.emitterX = 40 + 80*j;
+					ps.emitterY = 60*k;
+					ps.start();
+					var pos:int = j * 12 + k - 1;
+					//spiteV[pos] = new Sprite();
+					//addChild(spiteV[pos]);
+					//spiteV[pos].addChild(ps);
+					sprite.addChild(ps); //batching!!! siblings with same parent
 				}
 			}
         }
@@ -145,6 +186,8 @@ package
         {
             if (keyCode == Keyboard.SPACE)
                 startNextParticleSystem();
+				
+			//trace('instances', FFParticleStyle.effectType._instances.length, FFParticleStyleClone.effectType._instances.length)
         }
         
         private function onTouch(event:TouchEvent):void
