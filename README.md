@@ -1,13 +1,13 @@
 Batch test
 =========
 
-Without BATCH:
--------
+Without BATCH - More draw calls and more FPS
+-------------------------------------------
 ![Without debug player](WITHOUTbatch_RELEASE_sa_debug_player.PNG)
 ![Without sa player](WITHOUTbatch_RELEASE_sa_player.PNG)
 
-With BATCH:
--------
+With BATCH - Less draw calls but less FPS
+----------------------------------------
 ![With debug player](WITHbatch_RELEASE_sa_debug_player.PNG)
 ![With sa player](WITHbatch_RELEASE_sa_player.PNG)
 
