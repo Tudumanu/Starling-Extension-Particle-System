@@ -1,5 +1,10 @@
 package
 {
+	import com.funkypandagame.stardustplayer.SimLoader;
+	import com.funkypandagame.stardustplayer.SimPlayer;
+	import com.funkypandagame.stardustplayer.project.ProjectValueObject;
+	import flash.utils.ByteArray;
+	
 	import de.flintfabrik.starling.extensions.FFParticleSystem;
 	import de.flintfabrik.starling.extensions.FFParticleSystem.SystemOptions;
 	import de.flintfabrik.starling.extensions.FFParticleSystem.rendering.FFParticleEffect;
@@ -19,6 +24,7 @@ package
     import starling.extensions.PDParticleSystem;
     import starling.extensions.ParticleSystem;
     import starling.textures.Texture;
+	
 
     public class Demo extends Sprite
     {
@@ -60,12 +66,23 @@ package
         private static const MyFireConfig:Class;
 		
 		
+		/////////////////////////
+		//Stardust particle
+		[Embed(source = "../media/blazingFire.sde", mimeType = "application/octet-stream")]
+		private static const StardustFire:Class;
+		
+		private const loader:SimLoader = new SimLoader();
+		private const player:AnimatableSimPlayer = new AnimatableSimPlayer();
+		
 
         // member variables
         
         private var _particleSystems:Vector.<ParticleSystem>;
         private var _particleSystem:ParticleSystem;
         
+		
+		private var sprite:Sprite = new Sprite();
+		
         public function Demo()
         {
             addEventListener(Event.ADDED_TO_STAGE, init);
@@ -108,9 +125,7 @@ package
 			var myConfig:XML = XML(new MyFireConfig());
             var myTexture:Texture = Texture.fromEmbeddedAsset(MyFireParticle);
 			
-			var sprite:Sprite = new Sprite();
 			addChild(sprite);
-			
 			//16 * 12 = 192
 			/*for (var j:int = 0; j <= 15; j++){ //16
 				for (var k:int = 1; k <= 12; k++){ //12
@@ -130,7 +145,7 @@ package
 			/////////////////////////////
 			//FFParticle
 			// create system options
-			var sysOpt:SystemOptions = SystemOptions.fromXML(myConfig, myTexture);
+			/*var sysOpt:SystemOptions = SystemOptions.fromXML(myConfig, myTexture);
 			
 			var particleSystemDefaultStyle:Class = FFParticleSystem.defaultStyle;
 			var ffpsStyle:FFParticleStyle = new particleSystemDefaultStyle();
@@ -159,8 +174,28 @@ package
 					//spiteV[pos].addChild(ps);
 					sprite.addChild(ps); //batching!!! siblings with same parent
 				}
-			}
+			}*/
+			
+			
+			///////////////////////////
+			//Stardust
+			loadSim();
         }
+		
+		public function loadSim():void
+		{
+			loader.addEventListener("complete", onSimLoaded);
+			var assetInstance:ByteArray = new StardustFire();
+			loader.loadSim(assetInstance);
+		}
+		 
+		private function onSimLoaded(event:Object):void
+		{
+			var project:ProjectValueObject = loader.createProjectInstance();
+			player.setProject(project);
+			player.setRenderTarget(sprite);
+			Starling.juggler.add(player);
+		}
         
         private function startNextParticleSystem():void
         {
