@@ -4,6 +4,11 @@ package
 	import com.funkypandagame.stardustplayer.SimPlayer;
 	import com.funkypandagame.stardustplayer.project.ProjectValueObject;
 	import flash.utils.ByteArray;
+	import idv.cjcat.stardustextended.emitters.Emitter;
+	import idv.cjcat.stardustextended.handlers.starling.StardustStarlingRenderer;
+	import idv.cjcat.stardustextended.initializers.Initializer;
+	import idv.cjcat.stardustextended.initializers.PositionAnimated;
+	import idv.cjcat.stardustextended.zones.Zone;
 	
 	import de.flintfabrik.starling.extensions.FFParticleSystem;
 	import de.flintfabrik.starling.extensions.FFParticleSystem.SystemOptions;
@@ -72,8 +77,6 @@ package
 		private static const StardustFire:Class;
 		
 		private const loader:SimLoader = new SimLoader();
-		private const player:AnimatableSimPlayer = new AnimatableSimPlayer();
-		
 
         // member variables
         
@@ -179,8 +182,27 @@ package
 			
 			///////////////////////////
 			//Stardust
+			StardustStarlingRenderer.init(100, 15000)
 			loadSim();
         }
+		
+		private function move(project:ProjectValueObject, x:int, y:int):void {
+			 //Set the emitter's position to the pointer coordinate
+			for each (var emitter : Emitter in project.emittersArr)
+			{
+				for each (var init : Initializer in emitter.initializers)
+				{
+					if (init is PositionAnimated) // this initializes sets the starting position of the particles
+					{
+						var initPos : Vector.<Zone> = PositionAnimated(init).zones;
+						for each (var zone : Zone in initPos)
+						{
+							zone.setPosition(x, y);
+						}
+					}
+				}
+			}
+		}
 		
 		public function loadSim():void
 		{
@@ -191,10 +213,18 @@ package
 		 
 		private function onSimLoaded(event:Object):void
 		{
-			var project:ProjectValueObject = loader.createProjectInstance();
-			player.setProject(project);
-			player.setRenderTarget(sprite);
-			Starling.juggler.add(player);
+			//16 * 12 = 192
+			for (var j:int = 0; j <= 15; j++){ //16
+				for (var k:int = 1; k <= 8; k++){ //12
+					var project:ProjectValueObject = loader.createProjectInstance();
+					move(project, 40 + 80 * j, 60 * k);
+					
+					var player:AnimatableSimPlayer = new AnimatableSimPlayer();
+					player.setProject(project);
+					player.setRenderTarget(sprite);
+					Starling.juggler.add(player);
+				}
+			}
 		}
         
         private function startNextParticleSystem():void

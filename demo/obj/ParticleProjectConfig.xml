@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'02/02/2018'</value>
+      <value>'08/02/2018'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -38,9 +38,9 @@
       <path-element>G:\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <include-libraries>
-      <library>G:\Projetos Flash\Guy Steam\teste-starling-air\Starling-Extension-Particle-System\demo\lib\stardust-sim-loader.swc</library>
-      <library>G:\Projetos Flash\Guy Steam\teste-starling-air\Starling-Extension-Particle-System\demo\lib\stardust-library.swc</library>
       <library>G:\Projetos Flash\Guy Steam\teste-starling-air\Starling-Extension-Particle-System\demo\lib\starling.swc</library>
+      <library>G:\Projetos Flash\Guy Steam\teste-starling-air\Starling-Extension-Particle-System\demo\lib\stardust-library.swc</library>
+      <library>G:\Projetos Flash\Guy Steam\teste-starling-air\Starling-Extension-Particle-System\demo\lib\stardust-sim-loader.swc</library>
     </include-libraries>
   </compiler>
   <file-specs>

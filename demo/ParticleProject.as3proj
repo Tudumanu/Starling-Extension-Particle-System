@@ -49,9 +49,9 @@
   </build>
   <!-- SWC Include Libraries -->
   <includeLibraries>
-    <element path="lib\stardust-sim-loader.swc" />
-    <element path="lib\stardust-library.swc" />
     <element path="lib\starling.swc" />
+    <element path="lib\stardust-library.swc" />
+    <element path="lib\stardust-sim-loader.swc" />
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
